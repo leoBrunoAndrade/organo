@@ -1,7 +1,6 @@
 import './Botao.css'
 
 const Botao = (props) => {
-  console.log(props);
   return (
     <button className='botao'>
       

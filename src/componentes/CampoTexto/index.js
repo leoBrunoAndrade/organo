@@ -22,7 +22,7 @@ const CampoTexto = (props) => {
   1 - O controle da mudança do estado, geralmente é colocado no componente que chama este, ou seja, o formulário.
       Isso porque, colocando dentro do componente do input, teríamos que identificar qual componente exato (nome, imagem, cargo..),
       terá a mudança de estado realizada (ciclo de setar o valor e recuperar o mesmo);
-  2 - O componente do input terá o papel de possuir o evento e atribuir o valor digitado à props (no caso atualizar) especificada no form;
+  2 - O componente do input terá o papel de possuir o evento e atribuir o valor digitado à props (no caso atualizar) - chamando a função atualizar -  especificada no form;
   3 - No Form, existirá a declaração do controle de estados (useState) para cada "instância" do componente (nome, cargo, imagem..)
   4 - Além disso, para cada chamada do componente input, a declaração das props atualizar e valor(que será responsável por passar 
     o valor atualizado da variável da mudança de estado)
@@ -31,13 +31,10 @@ const CampoTexto = (props) => {
   */
 
   //const [valor, setValor] = useState('Bruno');
-  console.log('Inicio');
   const aoDigitar = (evento) => {
     props.atualizar(evento.target.value);
-    console.log(`Evento - ${evento.target.value}`);
 
   }
-  console.log(`Fim CampoTexto`);
   return (
     <div className="campo-texto">
       <label>{props.label}</label>

@@ -1,44 +1,48 @@
+import {v4 as uuidv4} from 'uuid'
 import { useState } from 'react';
+import './App.css';
 import Banner from './componentes/Banner';
 import Formulario from './componentes/Formulario';
 import Time from './componentes/Time';
 import Rodape from './componentes/Rodape';
+import CadastrarTime from './componentes/CadastrarTime';
+import BotaoExpandir from './componentes/BotaoExpandir';
 
 function App() {
 
-  const times = [
+  const [times, setTimes] = useState([
     {
+      id: uuidv4(),
       nome: 'Front-End',
-      corPrimaria: '#82CFFA',
-      corSecundaria: '#E8F8FF',
+      cor: '#82CFFA',
     },
     {
+      id: uuidv4(),
       nome: 'Data Sciense',
-      corPrimaria: '#A6D157',
-      corSecundaria: '#F0F8E2',
+      cor: '#A6D157',
     },
     {
+      id: uuidv4(),
       nome: 'Devops',
-      corPrimaria: '#E06B69',
-      corSecundaria: '#FDE7E8',
+      cor: '#E06B69',
     },
     {
+      id: uuidv4(),
       nome: 'UX e Design',
-      corPrimaria: '#D86EBF',
-      corSecundaria: '#FAE5F5',
+      cor: '#D86EBF',
     },
     {
+      id: uuidv4(),
       nome: 'Mobile',
-      corPrimaria: '#FEBA05',
-      corSecundaria: '#FFF5D9',
+      cor: '#FEBA05',
     },
     {
+      id: uuidv4(),
       nome: 'Inovação e Gestão',
-      corPrimaria: '#FF8A29',
-      corSecundaria: '#FFEEDF',
+      cor: '#FF8A29'
     }
+  ])
 
-  ]
 
   const [colaboradores, setColaborador] = useState([]);
 
@@ -47,20 +51,63 @@ function App() {
   Ao solicitar mudança de estado do colaborador, ao renderizar o componente Time, é passado a lista por props.
   */
   function adicionarColaborador(colaborador) {
-    console.log(`APP:`, colaborador);
     setColaborador([...colaboradores, colaborador]);
 
   }
 
+  function adicionarTime(time) {
+    console.log(time.cor)
+    setTimes([...times, time])
+
+  }
+
+
+  function deletarColaborador(id) {
+    setColaborador(colaboradores.filter(p => p.id !== id))
+    
+  }
+
+  function mudarCorTime(cor, id) {
+    setTimes(times.map(t => {
+      if(t.id === id) {
+        t.cor = cor;
+      }
+      return t;
+    
+    }));
+  }
+
+
+  const [expandirValue, setExpandirValue] = useState(true);
+  function expandirTimes(evento) {
+    console.log(expandirValue)
+    if(expandirValue){
+      setExpandirValue(false);
+    }else {
+      setExpandirValue(true);
+    }
+  }
+ 
   return (
-    <div className="App">
+    <div className="app">
       <Banner />
-      <Formulario times={times.map(time => time.nome)} enviarColaborador={colaborador => adicionarColaborador(colaborador)} />
-      {times.map(time => <Time
-        colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}
-        key={time.nome} nome={time.nome}
-        corPrimaria={time.corPrimaria}
-        corSecundaria={time.corSecundaria} />)}
+      {expandirValue && 
+        <div className='principal'>
+          <Formulario times={times.map(time => time.nome)} enviarColaborador={adicionarColaborador} />
+          <CadastrarTime enviarTime={adicionarTime} />
+        </div>
+      }
+        <BotaoExpandir expandir={expandirTimes}/>
+        {times.map(time => 
+              <Time
+                mudarCorTime={mudarCorTime}
+                colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}
+                key={time.nome} nome={time.nome}
+                cor={time.cor}
+                id={time.id}
+                aoDeletar={deletarColaborador} 
+              />
+            )}
       <Rodape />
     </div>
   );

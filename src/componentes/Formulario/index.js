@@ -1,3 +1,4 @@
+import {v4 as uuidv4} from 'uuid'
 import { useState } from 'react';
 import Botao from '../Botao';
 import CampoTexto from '../CampoTexto';
@@ -41,6 +42,7 @@ const Formulario = (props) => {
   function salvar(evento) {
     evento.preventDefault();
     const colaborador = {
+      id: uuidv4(),
       nome: nome,
       cargo: cargo,
       imagem: imagem,
@@ -48,7 +50,7 @@ const Formulario = (props) => {
     }
     props.enviarColaborador(colaborador);
     
-
+    setTime('');
     setNome('');
     setCargo('');
     setTime('');
@@ -76,7 +78,6 @@ const Formulario = (props) => {
           label="Imagem"
           placeholder="Informe o endereço da imagem" />
         <ListaSuspensa
-          value={time}
           atualizar={valor => setTime(valor)}
           obrigatorio={true}
           label="Time" items={props.times} />
